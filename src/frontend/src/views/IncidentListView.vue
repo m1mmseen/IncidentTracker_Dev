@@ -2,19 +2,57 @@
 
 import NavigationBar from "@/components/NavigationBar.vue";
 import PageTitle from "@/components/PageTitle.vue";
-import IncidentRow from "@/components/IncidentRow.vue";
-</script>
 
+
+</script>
 <template>
   <NavigationBar/>
   <PageTitle msg="Incidents"/>
   <div class="container-sm">
-    <IncidentRow titel="Incident 3" text="Mail from 02.07.2023" class="text-bg-info ps-4 pe-4 rounded text-light" incidenttag="Mail"/>
+    <h1 class="text-center">Incident List</h1>
 
-    <IncidentRow titel="Incident 5" text="Network crashing after update" class="text-bg-danger ps-4 pe-4 rounded text-light" incidenttag="Network"/>
+    <table class = "table table-striped">
+      <thead>
+      <tr>
+        <th> Incident Id</th>
+        <th> Incident Titel</th>
+
+      </tr>
+
+      </thead>
+      <tbody>
+      <tr v-for="incident in incidents" v-bind:key="incident.id">
+        <td> {{incident.id }}</td>
+        <td> {{incident.titel }}</td>
+
+      </tr>
+      </tbody>
+    </table>
+
   </div>
 </template>
+<script>
+  import IncidentService from "@/services/IncidentService";
 
-<style scoped>
+  export default {
+    name: 'Incidents',
+    data(){
+      return {
+        incidents: []
+      }
+    },
+    methods: {
+      getIncidents(){
+        IncidentService.getIncidents().then((response) => {
+          this.incidents = response.data;
+        });
+      }
+    },
+    created() {
+      this.getIncidents();
+    }
+  }
 
-</style>
+</script>
+
+
