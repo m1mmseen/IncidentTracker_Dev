@@ -17,9 +17,8 @@ public class Incident {
     @Column(length = 500)
     private String Description;
 
-    //@Column(insertable = false, updatable = false)
-    //@Temporal(TemporalType.TIMESTAMP)
-    //private Date Reportdate;
+    @Column(name = "reportDate")
+    private String reportdate;
 
     @Column(nullable = false)
     private boolean isSolved;
@@ -51,13 +50,29 @@ public class Incident {
         Description = description;
     }
 
-//    public Date getReportdate() {
-//        return Reportdate;
-//    }
-//
-//    public void setReportdate(Date reportdate) {
-//        Reportdate = reportdate;
-//    }
+    public Long getIncidentId() {
+        return incidentId;
+    }
+
+    public void setIncidentId(Long incidentId) {
+        this.incidentId = incidentId;
+    }
+
+    public String getReportdate() {
+        return reportdate;
+    }
+
+    public void setReportdate(String reportdate) {
+        this.reportdate = reportdate;
+    }
+
+    public List<IncidentUpdates> getUpdates() {
+        return updates;
+    }
+
+    public void setUpdates(List<IncidentUpdates> updates) {
+        this.updates = updates;
+    }
 
     public boolean isSolved() {
         return isSolved;

@@ -19,4 +19,11 @@ public class IncidentUpdates {
     @ManyToOne
     @JoinColumn(name = "incidentId")
     private Incident incident;
+
+    private long createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = System.currentTimeMillis() / 1000;  // Convert milliseconds to seconds
+    }
 }
