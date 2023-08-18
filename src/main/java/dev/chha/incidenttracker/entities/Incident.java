@@ -1,4 +1,4 @@
-package dev.chha.incidenttracker;
+package dev.chha.incidenttracker.entities;
 
 import jakarta.persistence.*;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 public class Incident {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
@@ -18,9 +18,9 @@ public class Incident {
     @Column(columnDefinition ="VARCHAR(MAX)")
     private String Description;
 
-    @Column(insertable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date Reportdate;
+    //@Column(insertable = false, updatable = false)
+    //@Temporal(TemporalType.TIMESTAMP)
+    //private Date Reportdate;
 
     @Column(nullable = false)
     private boolean isSolved;
@@ -57,13 +57,13 @@ public class Incident {
         Description = description;
     }
 
-    public Date getReportdate() {
-        return Reportdate;
-    }
-
-    public void setReportdate(Date reportdate) {
-        Reportdate = reportdate;
-    }
+//    public Date getReportdate() {
+//        return Reportdate;
+//    }
+//
+//    public void setReportdate(Date reportdate) {
+//        Reportdate = reportdate;
+//    }
 
     public boolean isSolved() {
         return isSolved;

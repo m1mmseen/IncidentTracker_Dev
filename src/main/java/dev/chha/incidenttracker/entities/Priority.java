@@ -1,4 +1,4 @@
-package dev.chha.incidenttracker;
+package dev.chha.incidenttracker.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

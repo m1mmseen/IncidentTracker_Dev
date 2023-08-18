@@ -1,1 +1,0 @@
-import{o as a,c as r,b as e,F as s,N as t,P as o}from"./index-5c91603c.js";const m={__name:"User_NewUser_View",setup(c){return(n,_)=>(a(),r(s,null,[e(t),e(o,{msg:"New User"})],64))}};export{m as default};

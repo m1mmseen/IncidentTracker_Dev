@@ -1,14 +1,99 @@
 <template>
-  <IncidentDetailsPageTitle title="Incident No. 5" incidenttag="Mail"/>
+  <div v-if="isLoading">Loading...</div>
+  <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4" :incidentId="incidentId">
+    <div class="row">
+      <h3>
+        <span class="badge bg-info-subtle text-dark">{{ incident.id }}</span>
+        {{ incident.titel }}
+        <div class="btn-group float-end" role="group">
+          <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+            Actions
+          </button>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item" href="#" id="edit" @click.stop="editIncident">Edit</a>
+<!--            <a class="dropdown-item" href="#" id="delete" @click.stop="deleteIncident">Delete</a>-->
+          </ul>
+        </div>
+
+      </h3>
+    </div>
+    <div class="row g-2">
+      <div class="col">
+        <p>Description: <b>{{ incident.description }}</b></p>
+        <p>Reportdate: {{ incident.reportdate }}</p>
+        <p>Reporter: "dummy"</p>
+        <p v-if="incident.isSolved">
+          Status: <b>solved</b>
+        </p>
+
+        <p v-else>
+          Status: <b>open</b>
+        </p>
+        <p>Tags: "dummy"</p>
+        <p>Priority: "dummy"</p>
+      </div>
+      <div class="col">
+      </div>
+    </div>
+  </div>
+  <StatusNewUpdate/>
+  <StatusUpdates/>
 </template>
 
 <script>
-
-import NavigationBar from "@/components/NavigationBarAdmin.vue";
-import IncidentDetailsPageTitle from "@/components/IndicentDetailsPageTitle.vue";
+import { watch, ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
 
 export default {
   name: 'IncidentCard',
-  components: {IncidentDetailsPageTitle, NavigationBar}
+
+  setup() {
+
+    const incident = ref({}); // Initial empty object
+    const route = useRoute(); // Get access to the current route
+    console.log("Route ID:", route.params.id);
+
+
+    watch(() => route.params.id, async (newParams) => {
+      console.log("Route ID from inside:", route.params.id);
+
+      if (newParams) {
+        try {
+          const response = await axios.get(`/api/incident/${newParams}`);
+          incident.value = response.data;
+          console.log("Data fetched:", response.data);
+        }catch (error) {
+          console.error('There was an error fetching the data:', error);
+        }
+      }
+    }, {immediate: true});
+
+    // Computed property to check if myObject is still loading
+    const isLoading = computed(() => {
+      return Object.keys(incident.value).length === 0;
+    });
+
+    return {
+      incident: incident,
+      isLoading
+    };
+  }
 }
 </script>
+<style scoped>
+.card:hover {
+  box-shadow: none;
+}
+
+#delete:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+#edit:hover {
+  background-color: #6610f2;
+  color: white;
+}
+</style>

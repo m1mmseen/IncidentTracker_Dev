@@ -1,1 +1,0 @@
-import{o as t,c as a,b as e,F as o,N as r}from"./index-5c91603c.js";import{U as n}from"./User_Footer_Menu-4650752f.js";import{P as s}from"./PageTitleWithButton-fa2fdc35.js";const d={__name:"Dashboard_View",setup(i){return(c,m)=>(t(),a(o,null,[e(r),e(s,{msg:"Dashboard",destination:"/incidents/create",buttonText:"Report new Incident"}),e(n)],64))}};export{d as default};

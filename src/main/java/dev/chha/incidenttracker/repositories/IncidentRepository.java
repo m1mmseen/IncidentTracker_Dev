@@ -1,6 +1,6 @@
-package dev.chha.incidenttracker;
+package dev.chha.incidenttracker.repositories;
 
-import dev.chha.incidenttracker.Incident;
+import dev.chha.incidenttracker.entities.Incident;
 import org.springframework.data.repository.CrudRepository;
 
 public interface IncidentRepository extends CrudRepository<Incident, Integer> {

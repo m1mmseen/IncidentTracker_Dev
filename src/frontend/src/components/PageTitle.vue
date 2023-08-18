@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid bg-success-subtle p-4 mb-2">
+  <div class="container-fluid bg-success-subtle p-4 m-2">
     <h2>{{ msg }}</h2>
   </div>
 </template>
