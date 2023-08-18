@@ -19,7 +19,7 @@ public class IncidentController {
     private IncidentRepository incidentRepo;
 
     @GetMapping("/incident/{incidentId}")
-    public ResponseEntity hello(@PathVariable int incidentId) {
+    public ResponseEntity hello(@PathVariable Long incidentId) {
 
         Optional<Incident> incident = incidentRepo.findById(incidentId);
 
@@ -30,7 +30,7 @@ public class IncidentController {
 
     }
     @DeleteMapping("/incident/{incidentId}")
-    public void delete(@PathVariable int incidentId) {
+    public void delete(@PathVariable Long incidentId) {
 
         Optional<Incident> incident = incidentRepo.findById(incidentId);
 
@@ -59,7 +59,7 @@ public class IncidentController {
 
     @PutMapping("/incidents/edit/{incidentId}")
     @Transactional
-    public ResponseEntity updateIncident(@PathVariable int incidentId,
+    public ResponseEntity updateIncident(@PathVariable Long incidentId,
                                          @RequestBody Incident incident) {
         Optional<Incident> updatedIncident = incidentRepo.findById(incidentId);
 

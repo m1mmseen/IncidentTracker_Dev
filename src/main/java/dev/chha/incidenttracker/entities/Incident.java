@@ -1,21 +1,20 @@
 package dev.chha.incidenttracker.entities;
 
 import jakarta.persistence.*;
+import java.util.List;
 
-import java.util.Date;
-import java.util.Set;
 
 @Entity
 public class Incident {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long incidentId;
 
     @Column
     private String Titel;
 
-    @Column(columnDefinition ="VARCHAR(MAX)")
+    @Column(length = 500)
     private String Description;
 
     //@Column(insertable = false, updatable = false)
@@ -25,20 +24,15 @@ public class Incident {
     @Column(nullable = false)
     private boolean isSolved;
 
-    @OneToMany
-    @JoinColumn(name = "id")
-    private Set<Tags> tags;
+    @OneToMany(mappedBy = "incident")
+    private List<IncidentUpdates> updates;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Priority priority ;
-
-    public Integer getId() {
-        return id;
+    public Long getId() {
+        return incidentId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Long id) {
+        this.incidentId = id;
     }
 
     public String getTitel() {
@@ -73,19 +67,4 @@ public class Incident {
         isSolved = solved;
     }
 
-    public Set<Tags> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tags> tags) {
-        this.tags = tags;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
 }
