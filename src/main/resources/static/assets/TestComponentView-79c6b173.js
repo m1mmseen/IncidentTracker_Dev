@@ -1,0 +1,1 @@
+import{o as a,c as t,b as o,a as s,t as n,F as r,N as l}from"./index-5c91603c.js";const i={__name:"TestComponentView",setup(c){return(e,p)=>(a(),t(r,null,[o(l),s("h2",null,"Hello Test Component: "+n(e.$route.params.id),1)],64))}};export{i as default};
