@@ -5,7 +5,7 @@
          :key="incident.id"
          @click="goToDetails(incident.id)">
       <div class="card-header m-0 pt-1 pb-0">
-        <b class="float-start"><span class="bg-warning p4">{{ incident.id }}</span>{{ incident.titel }}</b>
+        <b class="float-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.id }}</span>{{ incident.titel }}</b>
         <span class="float-end" v-bind="$attrs"><b>
           <p v-if="incident.isSolved">
           Status: <b>solved</b>
@@ -18,6 +18,7 @@
       </div>
       <div class="card-body pt-1">
         <p class="card-text m-0 p-0">{{ incident.description }}</p>
+        <p>Test</p>
         <div class="btn-group float-end">
           <button class="btn btn-outline-dark" v-on:click.stop="edit">Edit</button>
           <button class="btn btn-outline-dark" v-on:click.stop="deleteIncident(incident.id)">Delete</button>

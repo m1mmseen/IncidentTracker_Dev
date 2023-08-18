@@ -45,9 +45,15 @@
 import { watch, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import StatusNewUpdate from "./StatusNewUpdate.vue";
+import StatusUpdates from "./StatusUpdates.vue";
 
 export default {
   name: 'IncidentCard',
+  components: {
+    StatusNewUpdate,
+    StatusUpdates
+  },
 
   setup() {
 
