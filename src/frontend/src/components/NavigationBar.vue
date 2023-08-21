@@ -25,6 +25,9 @@
           <li class="nav-item">
             <router-link to="/test" class="nav-link" id="test">Test Components</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/dashboard/admin/user-overview" class="nav-link" id="test">Users</router-link>
+          </li>
         </ul>
       </div>
     </div>

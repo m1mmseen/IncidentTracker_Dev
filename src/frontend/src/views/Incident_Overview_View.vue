@@ -13,7 +13,7 @@
 import NavigationBar from "../components/NavigationBar.vue";
 import PageTitleWithButton from "../components/PageTitleWithButton.vue";
 import IncidentRow from "../components/IncidentRow.vue";
-import router from "../router/routes.js";
+
 import User_Footer_Menu from "../components/User_Footer_Menu.vue";
 
 export default {

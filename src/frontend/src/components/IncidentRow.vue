@@ -2,10 +2,10 @@
     <div class="visually-hidden bg-info z-3 position-absolute bottom-0 end-0 p-5 rounded-3 " id="info"><h1>:)</h1></div>
     <div class="card mt-2"
          v-for="incident in incidents"
-         :key="incident.id"
-         @click="goToDetails(incident.id)">
+         :key="incident.incidentId"
+         @click="goToDetails(incident.incidentId)">
       <div class="card-header m-0 pt-1 pb-0">
-        <b class="float-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.id }}</span>{{ incident.titel }}</b>
+        <b class="float-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.incidentId }}</span>{{ incident.titel }}</b>
         <span class="float-end" v-bind="$attrs"><b>
           <p v-if="incident.isSolved">
           Status: <b>solved</b>
@@ -52,11 +52,10 @@ export default {
       }
     },
     goToDetails(id) {
-      console.log("From row:" + id);
       router.push({
         name: 'incident-details',
         params: {
-          id: id
+          incidentId: this.incidentId
         }
       });
     },

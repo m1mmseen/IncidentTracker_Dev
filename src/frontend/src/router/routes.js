@@ -20,6 +20,10 @@ const routes = [
         name: 'admin-dashboard',
         component: () => import('../views/Dashboard_Admin_View.vue')
     },   {
+        path: '/dashboard/admin/user-overview',
+        name: 'admin-user-overview',
+        component: () => import('../views/User_Overview_Admin_view.vue')
+    },   {
         path: '/incidents',
         name: 'incident-list',
         component: () => import('../views/Incident_Overview_View.vue')

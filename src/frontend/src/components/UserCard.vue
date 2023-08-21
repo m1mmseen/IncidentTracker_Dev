@@ -11,11 +11,24 @@
             Actions
           </button>
           <ul class="dropdown-menu">
-            <a class="dropdown-item" href="#" id="edit" @click.stop="">Edit</a>
-            <!-- <a class="dropdown-item" href="#" id="delete" @click.stop="deleteIncident">Delete</a>-->
+            <a class="dropdown-item" href="#" id="edit" @click.stop="editUser">Edit</a>
+            <a class="dropdown-item" href="#" id="change" @click.stop="changePassword">Change Password</a>
+            <a class="dropdown-item" href="#" id="delete" @click.stop="deleteUser">Delete</a>
           </ul>
         </div>
       </h3>
+      <div class="card">
+        <img src="../assets/vue.svg" class="card-img-top w-25">
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"> <span>Firstname: </span><span class="float-end">{{ User.firstname}}</span></li>
+          <li class="list-group-item"><span>Lastname: </span><span class="float-end">{{ User.lastname}}</span></li>
+          <li class="list-group-item"> <span>Userrole:</span><span class="float-end">{{ User.role }}</span></li>
+          <li class="list-group-item"><span>Assigned incidents: </span><span class="float-end"></span></li>
+          <li class="list-group-item"><span>Actual open incidents: </span><span class="float-end"></span></li>
+          <li class="list-group-item"><span>Last login: </span><span class="float-end"></span></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -51,6 +64,18 @@ const fetchIncidentData = () => {
 };
 
 
+const editUser = () => {
+  alert("Edit User Method");
+};
+const changePassword = () => {
+  alert("Change Password Method");
+};
+
+const deleteUser = () => {
+  alert("Delete User Method");
+};
+
+
 </script>
 <style scoped>
 .card:hover {
@@ -60,6 +85,11 @@ const fetchIncidentData = () => {
 #delete:hover {
   background-color: #dc3545;
   color: white;
+}
+
+#change:hover {
+  background-color: #ffda6a;
+  color: black;
 }
 
 #edit:hover {

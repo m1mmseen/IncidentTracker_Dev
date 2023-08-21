@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">Loading...</div>
-  <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4" :incidentId="incidentId">
+  <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4">
     <div class="row">
       <h3>
         <span class="badge bg-info-subtle text-dark">{{ incident.id }}</span>
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <StatusNewUpdate/>
+  <StatusNewUpdate v-if="incident && incident.id" :incidentId="Number(incident.id)"/>
   <StatusUpdates/>
 </template>
 
@@ -59,11 +59,11 @@ export default {
 
     const incident = ref({}); // Initial empty object
     const route = useRoute(); // Get access to the current route
-    console.log("Route ID:", route.params.id);
+
 
 
     watch(() => route.params.id, async (newParams) => {
-      console.log("Route ID from inside:", route.params.id);
+
 
       if (newParams) {
         try {
