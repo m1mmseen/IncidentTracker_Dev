@@ -44,10 +44,20 @@ public class UserController {
 
         String sort = sortRequest.getSorting();
 
-        if (sortRequest != null && "id".equals(sortRequest.getSorting())) {
+        if ("id".equals(sortRequest.getSorting())) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
             return new ResponseEntity<>(users, HttpStatus.OK);
+        } else if ("first".equals(sortRequest.getSorting())) {
+            Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "firstname"));
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } else if ("last".equals(sortRequest.getSorting())) {
+            Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "lastname"));
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } else if ("role".equals(sortRequest.getSorting())) {
+            Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "role"));
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
+
         return new ResponseEntity<>("Sorting ID not found", HttpStatus.BAD_REQUEST);
 
     }
