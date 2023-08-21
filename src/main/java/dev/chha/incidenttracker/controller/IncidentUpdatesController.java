@@ -1,18 +1,18 @@
 package dev.chha.incidenttracker.controller;
 
 import dev.chha.incidenttracker.dtos.IncidentUpdateDTO;
+import dev.chha.incidenttracker.dtos.UpdatesRequestDTO;
 import dev.chha.incidenttracker.entities.Incident;
 import dev.chha.incidenttracker.entities.IncidentUpdates;
 import dev.chha.incidenttracker.repositories.IncidentRepository;
 import dev.chha.incidenttracker.repositories.IncidentUpdatesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -50,5 +50,33 @@ public class IncidentUpdatesController {
         return new ResponseEntity(update, HttpStatus.CREATED);
 
     }
+
+    @PostMapping("/updates")
+    public ResponseEntity<?> getAllUpdatesByIncident(@RequestBody UpdatesRequestDTO updatesRequestDto) {
+        System.out.println(updatesRequestDto.getIncidentRequestId());
+
+        List<IncidentUpdates> updates = updateRepo.findAllByIncident_Id(updatesRequestDto.getIncidentRequestId());
+
+        return new ResponseEntity(updates, HttpStatus.OK);
+
+
+    }
+
+    @GetMapping("/allUpdates")
+    public ResponseEntity<?> getAllUpdatesBy() {
+
+
+        List<IncidentUpdates> updates = updateRepo.findAll();
+
+        return new ResponseEntity(updates, HttpStatus.OK);
+
+
+    }
+    @GetMapping("/updates/{incidentId}")
+    public ResponseEntity<?> getAllUpdatesByIncident(@PathVariable Long incidentId) {
+        List<IncidentUpdates> updates = updateRepo.findAllByIncident_Id(incidentId);
+        return new ResponseEntity<>(updates, HttpStatus.OK);
+    }
+
 
 }
