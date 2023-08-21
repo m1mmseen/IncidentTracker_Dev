@@ -38,7 +38,7 @@
     </div>
   </div>
   <StatusNewUpdate v-if="incident && incident.id" :incidentId="Number(incident.id)"/>
-  <StatusUpdates/>
+  <StatusUpdates v-if="incident && incident.id" :incidentId="Number(incident.id)"/>
 </template>
 
 <script>
