@@ -46,16 +46,17 @@ export default {
     async fetchIncidents() {
       try {
         const response = await axios.get('api/incidents');
-        this.incidents = response.data;
+        this.incidents = response.data
       } catch (error) {
         console.error('Error occurred fetching incidents:', error)
       }
     },
     goToDetails(id) {
+      console.log(id);
       router.push({
         name: 'incident-details',
         params: {
-          incidentId: this.incidentId
+          id: id
         }
       });
     },
