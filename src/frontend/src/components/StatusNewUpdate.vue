@@ -26,7 +26,7 @@
       <a href="#" class="btn btn-success">Solved</a>
     </div>
     <div class="col">
-      <a href="#" class="btn btn-info float-end">Update</a>
+      <button class="btn btn-info float-end" @click="submitForm()">Update</button>
     </div>
   </div>
   </div>
@@ -58,6 +58,7 @@ export default {
         ...this.formdata,
         incidentId: this.incidentId
       };
+      console.log(data);
       await axios.post('/api/newUpdate', data)
           .then((response) => {
             const status = response.status;

@@ -1,5 +1,6 @@
 package dev.chha.incidenttracker.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Incident {
     @Column(nullable = false)
     private boolean isSolved;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "incident")
     private List<IncidentUpdates> updates;
 

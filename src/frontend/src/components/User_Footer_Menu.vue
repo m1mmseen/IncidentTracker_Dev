@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="dropdown fixed-bottom mb-3">
+  <div class="dropdown fixed-bottom mb-3 ms-3">
     <button class="btn btn-outline-light text-dark border-dark-subtle shadow p-3 me-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       User Menu
     </button>
@@ -22,5 +22,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
+.dropdown{
+  right: unset;
+}
 </style>

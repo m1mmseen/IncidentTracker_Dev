@@ -1,9 +1,22 @@
-<script setup>
+<script>
 
 import NavigationBar from "../components/NavigationBar.vue";
 import IncidentCard from "../components/IncidentCard.vue";
 import PageTitleWithButton from "../components/PageTitleWithButton.vue";
 import User_Footer_Menu from "../components/User_Footer_Menu.vue";
+
+export default {
+  props: {
+    id: [Number, String]
+  },
+  components:{
+    NavigationBar,
+    PageTitleWithButton,
+    IncidentCard,
+    User_Footer_Menu
+
+  }
+}
 
 </script>
 
