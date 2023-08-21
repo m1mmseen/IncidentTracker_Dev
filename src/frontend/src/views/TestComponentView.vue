@@ -5,6 +5,8 @@
   <p>{{data.titel}}</p>
 
 
+
+
 </template>
 
 <script>
@@ -32,6 +34,7 @@ export default {
       }
 
     };
+
 
     watch(() => route.params.id, newVal => {
       id.value = newVal;

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IncidentUpdatesRepository extends JpaRepository<IncidentUpdates, Long> {
 
-    List<IncidentUpdates> findAllByIncident_Id(Long incidentId);
+    List<IncidentUpdates> findAllByIncident_IdOrderByCreatedAtDesc(Long incidentId);
 
 }

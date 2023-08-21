@@ -51,17 +51,6 @@ public class IncidentUpdatesController {
 
     }
 
-    @PostMapping("/updates")
-    public ResponseEntity<?> getAllUpdatesByIncident(@RequestBody UpdatesRequestDTO updatesRequestDto) {
-        System.out.println(updatesRequestDto.getIncidentRequestId());
-
-        List<IncidentUpdates> updates = updateRepo.findAllByIncident_Id(updatesRequestDto.getIncidentRequestId());
-
-        return new ResponseEntity(updates, HttpStatus.OK);
-
-
-    }
-
     @GetMapping("/allUpdates")
     public ResponseEntity<?> getAllUpdatesBy() {
 
@@ -74,7 +63,7 @@ public class IncidentUpdatesController {
     }
     @GetMapping("/updates/{incidentId}")
     public ResponseEntity<?> getAllUpdatesByIncident(@PathVariable Long incidentId) {
-        List<IncidentUpdates> updates = updateRepo.findAllByIncident_Id(incidentId);
+        List<IncidentUpdates> updates = updateRepo.findAllByIncident_IdOrderByCreatedAtDesc(incidentId);
         return new ResponseEntity<>(updates, HttpStatus.OK);
     }
 

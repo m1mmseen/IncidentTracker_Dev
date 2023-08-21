@@ -5,16 +5,22 @@
         <h3>Recent Updates</h3>
       </div>
     </div>
-    <div class="d-flex flex-column"
+    <div class="d-flex flex-column mb-3"
           v-for="update in updates"
           :key="update.id">
-      <div class="card text-start">
-        <div class="card-header">
-          <strong class="float-start">User</strong>
-          <strong class="float-end">2 days ago</strong>
+      <div class="card container">
+        <div class="card-header row align-items-start">
+          <div class="col text-start">
+            <strong>{{ update.shortDescription }}</strong>
+          </div>
+          <div class="col text-center">
+            <strong>User</strong>
+          </div>
+          <div class="col text-end">
+            <strong> {{getDate(update.createdAt)}}</strong>
+          </div>
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ updates.shortDescription }}</h5>
           <p class="card-text">{{update.updateText}}</p>
         </div>
       </div>
@@ -42,11 +48,6 @@ export default {
   created() {
     this.fetchUpdates();
   },
-  watch: {
-    updates() {
-      this.fetchUpdates()
-    }
-  },
   methods: {
     async fetchUpdates() {
       try {
@@ -57,6 +58,35 @@ export default {
       }catch (e) {
         console.log("Error fetching Updates: ", e);
       }
+    },
+    getDate(unix) {
+      const unixTimestamp = unix;
+
+      const milliseconds = Date.now() ;
+
+      const difference = milliseconds - unixTimestamp;
+
+      const days = Math.floor(difference/1000/60/60/24)
+      const hours = Math.floor(difference/1000/60/60)
+      const minutes = Math.floor(difference/1000/60)
+      const seconds = Math.floor(difference/1000)
+
+      if (days === 1) {
+        return days + " day ago";
+      } else if (days > 0) {
+        return days + " day(s) ago";
+      } else if (hours === 1) {
+        return hours + " hour ago";
+      } else if (hours > 1) {
+        return hours + " hours ago";
+      } else if (minutes === 1) {
+        return minutes + " minute ago";
+      } else if (minutes > 1) {
+        return minutes + " minutes ago";
+      } else if (seconds > 0) {
+        return seconds + " seconds ago";
+      }
+      return difference;
     }
   }
 
