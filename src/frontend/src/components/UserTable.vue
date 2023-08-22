@@ -28,7 +28,8 @@
         <td>Dummy</td>
         <td>
           <button class="btn btn-info me-2" @click.stop="editUser">Edit</button>
-          <button class="btn btn-danger" @click.stop="deleteUser(user.id)">Delete</button>
+          <button class="btn btn-danger me-2" @click.stop="deleteUser(user.id)">Delete</button>
+          <button class="btn btn-warning" >Change Password</button>
         </td>
       </tr>
       </tbody>
