@@ -10,6 +10,16 @@ public class HomeController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello USer";
+        return "Hello all";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+        return "Hello User";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "Hello Admin";
     }
 }
