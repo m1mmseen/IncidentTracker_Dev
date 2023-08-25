@@ -26,7 +26,7 @@ public class UserController {
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Incident not found with id: " + userId, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("User not found with id: " + userId, HttpStatus.NOT_FOUND);
 
     }
 
