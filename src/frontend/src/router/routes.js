@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home_View.vue'
+import {useAuth} from "../stores/auth.js";
 
 const routes = [
     {
@@ -61,11 +62,13 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-    const publicPages = ['/login']
+    const publicPages = ['/login', '/']
     const authRequired = !publicPages.includes(to.path);
+    const auth = useAuth();
 
 
-    if (authRequired) {
+
+    if (authRequired && auth.user == '') {
         return 'login';
     }
 })

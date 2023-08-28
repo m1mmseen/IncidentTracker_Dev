@@ -1,8 +1,14 @@
 <script>
 import {defineComponent} from 'vue'
+import {useAuth} from "../stores/auth.js";
 
 export default defineComponent({
-  name: "Footer"
+  name: "Footer",
+  methods: {
+    logout(){
+      useAuth().logout();
+    }
+  }
 })
 </script>
 
@@ -16,7 +22,7 @@ export default defineComponent({
       <li><a class="dropdown-item"><router-link to="/user" class="nav-link">User Details</router-link></a></li>
       <li><a class="dropdown-item" href="#">Password</a></li>
       <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="#">Log out</a></li>
+      <li><a class="dropdown-item" @click="logout">Log out</a></li>
     </ul>
   </div>
 </template>

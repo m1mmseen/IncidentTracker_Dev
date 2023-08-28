@@ -20,7 +20,7 @@
         <button type="submit" class="btn btn-light border-2 border-dark-subtle ps-4 pe-4">Login</button>
       </form>
     </div>
-    <img src="../assets/vue.svg" alt="vuelogo" class="img-fluid">
+
 
   </div>
 </template>
@@ -37,7 +37,6 @@ const user = reactive({
 const onSubmit = () => {
 
   if (user.username !== '' && user.password !== '') {
-    console.log("angekommen");
       useAuth().login(user.username, user.password);
   } else {
     console.log("rausgefallen");
