@@ -6,6 +6,7 @@
          @click="goToDetails(incident.incidentId)">
       <div class="card-header m-0 pt-1 pb-0">
         <b class="float-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.incidentId }}</span>{{ incident.titel }}</b>
+        <b class=""><span class="badge bg-warning-subtle text-dark me-3">{{ incident.user}}</span></b>
         <span class="float-end" v-bind="$attrs"><b>
           <p v-if="incident.isSolved">
           Status: <b>solved</b>
@@ -30,11 +31,15 @@
 <script>
 import axios from "axios";
 import router from "../router/routes.js";
+import {useAuth} from "../stores/auth.js";
+
+const userdata = useAuth();
 
 export default {
   name: 'IncidentTable',
   data(){
     return {
+      token: userdata.token,
       incidents: [],
     };
   },
@@ -44,10 +49,15 @@ export default {
   },
   methods: {
     async fetchIncidents() {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        },
+      };
       try {
-        const response = await axios.get('api/incidents');
-        this.incidents = response.data
-      } catch (error) {
+        const response = await axios.get('api/incidents', config);
+        this.incidents = response.data;
+        } catch (error) {
         console.error('Error occurred fetching incidents:', error)
       }
     },

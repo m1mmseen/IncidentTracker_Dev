@@ -1,7 +1,11 @@
 package dev.chha.incidenttracker.controller;
 
+import dev.chha.incidenttracker.dtos.IncidentDTO;
+import dev.chha.incidenttracker.entities.User;
 import dev.chha.incidenttracker.repositories.IncidentRepository;
 import dev.chha.incidenttracker.entities.Incident;
+import dev.chha.incidenttracker.repositories.UserRepository;
+import dev.chha.incidenttracker.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.lang.module.ResolutionException;
 import java.util.Optional;
 
 @RestController
@@ -18,15 +23,24 @@ public class IncidentController {
     @Autowired
     private IncidentRepository incidentRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/incident/{incidentId}")
-    public ResponseEntity hello(@PathVariable Long incidentId) {
+    public ResponseEntity<?> hello(@PathVariable Long incidentId) {
 
-        Optional<Incident> incident = incidentRepo.findById(incidentId);
+        Optional<Incident> incidentOpt = incidentRepo.findById(incidentId);
 
-        if (incident.isPresent()) {
-            return new ResponseEntity<>(incident.get(), HttpStatus.OK);
+        if(!incidentOpt.isPresent()) {
+            return new ResponseEntity<>("No Incident found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("Incident not found with id: " + incidentId, HttpStatus.NOT_FOUND);
+        Incident incident = incidentOpt.get();
+        IncidentDTO responseIncidentDTO = getFieldsFromIncident(incident);
+
+        return new ResponseEntity<>(responseIncidentDTO, HttpStatus.OK);
 
     }
     @DeleteMapping("/incident/{incidentId}")
@@ -49,11 +63,27 @@ public class IncidentController {
 
     @PostMapping("/incidents/create")
     @Transactional
-    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
+    public ResponseEntity<?> createIncident(@RequestBody IncidentDTO incidentDTO) {
 
-        Incident newIncident = incidentRepo.save(incident);
 
-        return new ResponseEntity<Incident>(newIncident, HttpStatus.OK);
+        Optional<User> user = userRepo.findById(incidentDTO.getUser_id());
+
+        if(!user.isPresent()) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        Incident newIncident = new Incident();
+
+        newIncident.setUser(user.get());
+        newIncident.setTitel(incidentDTO.getTitel());
+        newIncident.setDescription(incidentDTO.getDescription());
+        newIncident.setReportdate(incidentDTO.getReportdate());
+        newIncident.setSolved(incidentDTO.isSolved());
+
+
+        incidentRepo.save(newIncident);
+
+        return new ResponseEntity<Incident>(newIncident, HttpStatus.CREATED);
 
     }
 
@@ -69,6 +99,21 @@ public class IncidentController {
             return new ResponseEntity<>(savedIncident, HttpStatus.OK);
         }
         return new ResponseEntity<>("Incident not found with id" + incidentId, HttpStatus.NOT_FOUND);
+    }
+
+    private IncidentDTO getFieldsFromIncident(Incident incident) {
+        IncidentDTO dto = new IncidentDTO();
+
+        dto.setIncidentId(incident.getIncidentId());
+        dto.setTitel(incident.getTitel());
+        dto.setDescription(incident.getDescription());
+        dto.setReportdate(incident.getReportdate());
+
+        if(incident.getUser() != null){
+            dto.setUser_id(incident.getUser().getUserId());
+            dto.setUsername(incident.getUser().getUsername());
+        }
+        return dto;
     }
 
 }

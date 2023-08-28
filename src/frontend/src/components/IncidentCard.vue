@@ -22,7 +22,7 @@
       <div class="col">
         <p>Description: <b>{{ incident.description }}</b></p>
         <p>Reportdate: {{ incident.reportdate }}</p>
-        <p>Reporter: "dummy"</p>
+        <p>Reporter: {{incident.username}}</p>
         <p v-if="incident.isSolved">
           Status: <b>solved</b>
         </p>
@@ -47,6 +47,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import StatusNewUpdate from "./StatusNewUpdate.vue";
 import StatusUpdates from "./StatusUpdates.vue";
+import {useAuth} from "../stores/auth.js";
 
 export default {
   name: 'IncidentCard',
@@ -59,17 +60,22 @@ export default {
 
     const incident = ref({}); // Initial empty object
     const route = useRoute(); // Get access to the current route
-
-
+    const userData = useAuth();
+    const token = userData.token;
 
     watch(() => route.params.id, async (newParams) => {
 
 
       if (newParams) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        };
         try {
-          const response = await axios.get(`/api/incident/${newParams}`);
+          const response = await axios.get(`/api/incident/${newParams}`, config);
           incident.value = response.data;
-          console.log("Data fetched:", response.data);
+          console.log("Data fetched:", JSON.stringify(response.data, null, 2));
         }catch (error) {
           console.error('There was an error fetching the data:', error);
         }
@@ -83,7 +89,7 @@ export default {
 
     return {
       incident: incident,
-      isLoading
+      isLoading,
     };
   }
 }

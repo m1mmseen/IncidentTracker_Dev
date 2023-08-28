@@ -25,8 +25,25 @@ public class Incident {
     private boolean isSolved;
 
     @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "incident")
     private List<IncidentUpdates> updates;
+
+    public Incident() {
+    }
+
+    public Incident(Long incidentId, String titel, String description, String reportdate, boolean isSolved, User user) {
+        this.incidentId = incidentId;
+        Titel = titel;
+        Description = description;
+        this.reportdate = reportdate;
+        this.isSolved = isSolved;
+        this.user = user;
+    }
 
     public Long getId() {
         return incidentId;
@@ -84,4 +101,24 @@ public class Incident {
         isSolved = solved;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Incident{" +
+                "incidentId=" + incidentId +
+                ", Titel='" + Titel + '\'' +
+                ", Description='" + Description + '\'' +
+                ", reportdate='" + reportdate + '\'' +
+                ", isSolved=" + isSolved +
+                ", user=" + user +
+                ", updates=" + updates +
+                '}';
+    }
 }

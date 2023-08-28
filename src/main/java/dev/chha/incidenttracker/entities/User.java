@@ -36,6 +36,10 @@ public class User implements UserDetails {
     )
     private Set<Role> authorities;
 
+    @Column(name = "assignedIncidents")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private Set<Incident> incidents;
+
     public User() {
     }
 
@@ -119,5 +123,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<Incident> getIncidents() {
+        return incidents;
+    }
+
+    public void setIncidents(Set<Incident> incidents) {
+        this.incidents = incidents;
     }
 }
