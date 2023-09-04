@@ -4,6 +4,7 @@ import dev.chha.incidenttracker.dtos.SortRequestDTO;
 import dev.chha.incidenttracker.dtos.UserDTO;
 import dev.chha.incidenttracker.entities.User;
 import dev.chha.incidenttracker.repositories.UserRepository;
+import dev.chha.incidenttracker.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,23 @@ public class UserController {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private TokenService tokenService;
+
     @GetMapping("/user/{userId}")
-    public ResponseEntity getUserDetails(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserDetails(@PathVariable Long userId,
+                                         @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring("Bearer ".length());
+
+        Long UserId = tokenService.extractUserIdFromToken(token);
+
+        if (!(UserId.equals(userId))) {
+            return new ResponseEntity<>("Not authorized to access this data", HttpStatus.FORBIDDEN);
+        }
 
         Optional<User> userOpt = userRepo.findById(userId);
 
-        if(!userOpt.isPresent()) {
+        if(userOpt.isEmpty()) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
         User user = userOpt.get();
@@ -57,19 +69,19 @@ public class UserController {
 
         String sort = sortRequest.getSorting();
 
-        if ("userId".equals(sortRequest.getSorting())) {
+        if ("userId".equals(sort)) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "userId"));
             return new ResponseEntity<>(users, HttpStatus.OK);
-        } else if ("username".equals(sortRequest.getSorting())) {
+        } else if ("username".equals(sort)) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "username"));
             return new ResponseEntity<>(users, HttpStatus.OK);
-        }else if ("firstname".equals(sortRequest.getSorting())) {
+        }else if ("firstname".equals(sort)) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "firstname"));
             return new ResponseEntity<>(users, HttpStatus.OK);
-        } else if ("lastname".equals(sortRequest.getSorting())) {
+        } else if ("lastname".equals(sort)) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "lastname"));
             return new ResponseEntity<>(users, HttpStatus.OK);
-        } else if ("role".equals(sortRequest.getSorting())) {
+        } else if ("role".equals(sort)) {
             Iterable<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "role"));
             return new ResponseEntity<>(users, HttpStatus.OK);
         }

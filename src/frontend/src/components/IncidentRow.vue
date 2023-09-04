@@ -1,4 +1,6 @@
 <template>
+    <p>Incidents: {{incidents.length}}</p>
+
     <div class="card container text-start mt-2"
          v-for="incident in incidents"
          :key="incident.incidentId"
@@ -79,7 +81,10 @@ export default {
       }
     },
     edit() {
+      alert("Edited");
   },
+
+
 
   }
 
