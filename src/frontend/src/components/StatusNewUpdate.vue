@@ -35,11 +35,15 @@
 <script>
 
 import axios from "axios";
+import {useAuth} from "../stores/auth.js";
+
+const userData = useAuth();
+
 
 export default {
   props: {
     incidentId: {
-      type: Number,
+      type: [Number, String],
       required: true
     }
   },
@@ -48,18 +52,30 @@ export default {
       formdata: {
         shortDescription: '',
         updateText: '',
-      }
+      },
+      token: userData.token,
+      user: userData.user,
+      userId: userData.userId,
+      username: userData.user
     }
   },
   methods: {
     async submitForm() {
-      console.log(this.incidentId);
+      const config = {
+        headers:{
+          Authorization:`Bearer ${this.token}`
+        }
+      };
       const data = {
         ...this.formdata,
-        incidentId: this.incidentId
+        incidentId: this.incidentId,
+        userId: this.userId,
+        username: this.username
+
       };
       console.log(data);
-      await axios.post('/api/newUpdate', data)
+      console.log("inside update func" + this.incidentId)
+      await axios.post('/api/newUpdate',data, config)
           .then((response) => {
             const status = response.status;
             if (status === 201) {

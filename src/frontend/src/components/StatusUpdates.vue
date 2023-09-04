@@ -14,7 +14,7 @@
             <strong>{{ update.shortDescription }}</strong>
           </div>
           <div class="col text-center">
-            <strong>User</strong>
+            <strong>{{ update.username }}</strong>
           </div>
           <div class="col text-end">
             <strong> {{getDate(update.createdAt)}}</strong>
@@ -30,18 +30,22 @@
 
 <script>
 import axios from "axios";
+import {useAuth} from "../stores/auth.js";
+
+const userData = useAuth();
 
 export default {
 
   name: 'updatesByIncident',
   data() {
     return {
-      updates: []
+      updates: [],
+      token: userData.token
     };
   },
   props: {
     incidentId: {
-      type: Number,
+      type: [Number, String],
       required: true
     }
   },
@@ -50,10 +54,16 @@ export default {
   },
   methods: {
     async fetchUpdates() {
+      const config = {
+        headers: {
+          Authorization:`Bearer ${this.token}`
+        },
+      };
       try {
-        const response = await axios.get(`/api/updates/${this.incidentId}`);
+        const response = await axios.get(`/api/updates/${this.incidentId}`, config);
         if (response.status === 200) {
           this.updates = response.data;
+          console.log(response.data);
         }
       }catch (e) {
         console.log("Error fetching Updates: ", e);
@@ -74,7 +84,7 @@ export default {
       if (days === 1) {
         return days + " day ago";
       } else if (days > 0) {
-        return days + " day(s) ago";
+        return days + " days ago";
       } else if (hours === 1) {
         return hours + " hour ago";
       } else if (hours > 1) {

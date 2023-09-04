@@ -1,13 +1,13 @@
 <template>
     <p>Incidents: {{incidents.length}}</p>
 
-    <div class="card container text-start mt-2"
+    <div class="card container text-start mt-2 m-3  border-2 border-dark"
          v-for="incident in incidents"
          :key="incident.incidentId"
          @click="goToDetails(incident.incidentId)">
-      <div class="card-header row justify-content-between">
-        <b class="col text-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.incidentId }}</span>{{ incident.titel }}</b>
-        <b class="col text-center">assigned to: <span class="badge bg-info-subtle text-dark-emphasis">{{ incident.username }}</span></b>
+      <div class="card-header row justify-content-between bg-light-subtle">
+        <b class="col text-start">{{ incident.titel }}</b>
+        <b class="col text-center ">assigned to: <span class="text-uppercase text-dark-emphasis">{{ incident.username }}</span></b>
         <span class="col text-end" v-bind="$attrs"><b>
           <p v-if="incident.isSolved">
           Status: <b>solved</b>
@@ -22,8 +22,8 @@
         <p class="card-text m-0 p-0">{{ incident.description }}</p>
         <p>Test</p>
         <div class="btn-group float-end">
-          <button class="btn btn-outline-dark" v-on:click.stop="edit">Edit</button>
-          <button class="btn btn-outline-dark" v-on:click.stop="deleteIncident(incident.id)">Delete</button>
+          <button class="btn btn-outline-success" v-on:click.stop="solved">Solved</button>
+          <button class="btn btn-outline-danger" v-on:click.stop="deleteIncident(incident.id)">Delete</button>
         </div>
       </div>
     </div>

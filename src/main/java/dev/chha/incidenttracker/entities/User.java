@@ -40,6 +40,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Set<Incident> incidents;
 
+    @Column(name = "incidentUpdates")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private Set<IncidentUpdates> incidentUpdates;
+
     public User() {
     }
 
@@ -135,6 +139,11 @@ public class User implements UserDetails {
         this.firstname = firstname;
     }
 
+    public Set<IncidentUpdates> getIncidentUpdates() {
+        return incidentUpdates;
+    }
 
-
+    public void setIncidentUpdates(Set<IncidentUpdates> incidentUpdates) {
+        this.incidentUpdates = incidentUpdates;
+    }
 }

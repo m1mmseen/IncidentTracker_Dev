@@ -86,20 +86,6 @@ public class IncidentController {
 
     }
 
-    @PutMapping("/incidents/edit/{incidentId}")
-    @Transactional
-    public ResponseEntity<?> updateIncident(@PathVariable Long incidentId,
-                                         @RequestBody Incident incident) {
-        Optional<Incident> updatedIncident = incidentRepo.findById(incidentId);
-
-        if (updatedIncident.isPresent()) {
-
-            Incident savedIncident = incidentRepo.save(incident);
-            return new ResponseEntity<>(savedIncident, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Incident not found with id" + incidentId, HttpStatus.NOT_FOUND);
-    }
-
     private IncidentDTO getFieldsFromIncident(Incident incident) {
         IncidentDTO dto = new IncidentDTO();
 

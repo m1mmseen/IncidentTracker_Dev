@@ -1,5 +1,6 @@
 package dev.chha.incidenttracker.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +22,11 @@ public class IncidentUpdates {
     private Incident incident;
 
     private long createdAt;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @PrePersist
     protected void onCreate() {
@@ -68,5 +74,13 @@ public class IncidentUpdates {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
