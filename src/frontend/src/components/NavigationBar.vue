@@ -7,26 +7,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link to="/" class="nav-link">Home</router-link>
-          </li>
-          <li class="nav-item">
+           <li class="nav-item">
             <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/incidents" class="nav-link">Incidents</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/user" class="nav-link">User</router-link>
+            <router-link to="/user/create" class="nav-link" v-if="isAdmin">Create User</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/user/create" class="nav-link">Create User</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/test" class="nav-link" id="test">Test Components</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard/admin/user-overview" class="nav-link" id="test">Users</router-link>
+            <router-link to="/dashboard/admin/user-overview" class="nav-link" id="test" v-if="isAdmin">Users</router-link>
           </li>
         </ul>
       </div>
@@ -37,6 +28,11 @@
 <script>
 export default {
   name: 'NavigationBar',
+  computed: {
+    isAdmin() {
+      return localStorage.getItem('isAdmin') === 'true';
+    }
+  }
 }
 </script>
 

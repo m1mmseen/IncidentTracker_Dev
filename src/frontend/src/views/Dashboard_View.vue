@@ -2,7 +2,6 @@
   <NavigationBar/>
   <PageTitleWithButton msg="Dashboard" destination="/incidents/create" buttonText="Report new Incident"/>
   <h1 class="text-bg-light">Hello {{user}}</h1>
-
   <User_Footer_Menu/>
 </template>
 
@@ -12,7 +11,7 @@ import NavigationBar from "../components/NavigationBar.vue";
 import User_Footer_Menu from "../components/User_Footer_Menu.vue";
 import PageTitleWithButton from "../components/PageTitleWithButton.vue";
 import {useAuth} from "../stores/auth.js";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 
 const auth = useAuth();
@@ -33,6 +32,7 @@ onMounted(async () => {
   });
   data.value = response.data;
 })
+
 
 </script>
 

@@ -4,23 +4,23 @@ import dev.chha.incidenttracker.entities.User;
 
 public class LoginResponseDTO{
 
-    private User user;
+    private UserDTO user;
 
     private String jwt;
 
     public LoginResponseDTO() {
     }
 
-    public LoginResponseDTO(User user, String jwt) {
+    public LoginResponseDTO(UserDTO user, String jwt) {
         this.user = user;
         this.jwt = jwt;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 

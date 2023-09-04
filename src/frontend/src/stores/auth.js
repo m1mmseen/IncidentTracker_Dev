@@ -10,6 +10,7 @@ export const useAuth = defineStore({
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
             token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null,
             userId: localStorage.getItem('userId') ? JSON.parse(localStorage.getItem('userId')) : null,
+            hasAdminRole: localStorage.getItem('isAdmin') ? JSON.parse(localStorage.getItem('isAdmin')) : null,
 
             returnUrl: '/dashboard'
         }
@@ -24,12 +25,17 @@ export const useAuth = defineStore({
                 localStorage.setItem('user', JSON.stringify(data.user.username));
                 localStorage.setItem('userId', JSON.stringify(data.user.userId));
 
+                const isAdmin = data.user.roles.some(role => {
+                    return role.authority === "ADMIN";
+                });
+                localStorage.setItem('isAdmin', isAdmin.toString());
 
                 this.user = data.user.username;
                 this.token = data.jwt;
                 this.userId = data.user.userId;
+                this.hasAdminRole = isAdmin.toString();
 
-                router.push(this.returnUrl || "/");
+                await router.push(this.returnUrl || "/");
             }
             else {
                 throw new Error("Invalid Username or Password");

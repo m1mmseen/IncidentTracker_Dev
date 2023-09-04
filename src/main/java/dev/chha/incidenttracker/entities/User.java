@@ -43,6 +43,7 @@ public class User implements UserDetails {
     public User() {
     }
 
+
     public User(Long userId, String username, String password, String lastname, String firstname, Set<Role> authorities) {
         this.userId = userId;
         this.username = username;
@@ -90,11 +91,6 @@ public class User implements UserDetails {
         return firstname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,6 +100,8 @@ public class User implements UserDetails {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -132,4 +130,11 @@ public class User implements UserDetails {
     public void setIncidents(Set<Incident> incidents) {
         this.incidents = incidents;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+
+
 }

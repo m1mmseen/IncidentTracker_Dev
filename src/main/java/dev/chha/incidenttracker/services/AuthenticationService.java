@@ -2,6 +2,7 @@ package dev.chha.incidenttracker.services;
 
 
 import dev.chha.incidenttracker.dtos.LoginResponseDTO;
+import dev.chha.incidenttracker.dtos.UserDTO;
 import dev.chha.incidenttracker.entities.Role;
 import dev.chha.incidenttracker.entities.User;
 import dev.chha.incidenttracker.repositories.RoleRepository;
@@ -11,11 +12,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -57,7 +61,17 @@ public class AuthenticationService {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(userRepo.findByUsername(username).get(), token);
+            User userOpt = userRepo.findByUsername(username).get();
+
+
+            UserDTO user = new UserDTO();
+            user.setUserId(userOpt.getUserId());
+            user.setUsername(userOpt.getUsername());
+            user.setRoles((Collection<GrantedAuthority>) userOpt.getAuthorities());
+            user.setFirstname(userOpt.getFirstname());
+            user.setLastname(userOpt.getLastname());
+
+            return new LoginResponseDTO(user, token);
 
         } catch (AuthenticationException e) {
             return new LoginResponseDTO(null, "");

@@ -3,7 +3,7 @@
   <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4" :UserId="UserId">
     <div class="row">
       <h3>
-        <span class="badge bg-info-subtle text-dark">{{ User.id }}</span>
+        <span class="badge bg-info-subtle text-dark">{{ User.userId }}</span>
         {{ User.username }}
         <div class="btn-group float-end" role="group">
           <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
@@ -23,10 +23,9 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item"> <span>Firstname: </span><span class="float-end">{{ User.firstname}}</span></li>
           <li class="list-group-item"><span>Lastname: </span><span class="float-end">{{ User.lastname}}</span></li>
-          <li class="list-group-item"> <span>Userrole:</span><span class="float-end">{{ User.role }}</span></li>
-          <li class="list-group-item"><span>Assigned incidents: </span><span class="float-end"></span></li>
+          <li class="list-group-item"> <span>Userrole:</span><span class="float-end">{{authorities}}</span></li>
+          <li class="list-group-item"><span>Assigned incidents: </span><span class="float-end">{{User.assignedIncidents}}</span></li>
           <li class="list-group-item"><span>Actual open incidents: </span><span class="float-end"></span></li>
-          <li class="list-group-item"><span>Last login: </span><span class="float-end"></span></li>
         </ul>
       </div>
     </div>
@@ -35,45 +34,60 @@
 
 </template>
 
-<script setup>
+<script>
 import axios from "axios";
 import {ref, onMounted, computed} from "vue";
 import {useRoute} from "vue-router";
-import router from "../router/routes.js";
-import StatusUpdates from "./StatusUpdates.vue";
-import StatusNewUpdate from "./StatusNewUpdate.vue";
+import {useAuth} from "../stores/auth.js";
 
-const route = useRoute();
-const UserId = route.params.UserId;
-const User = ref({});
+export default {
+  setup() {
+    const route = useRoute();
+    const UserId = route.params.UserId;
+    const User = ref({});
+    const userdata = useAuth();
+    const token = userdata.token;
+    const userId = userdata.userId;
+    const roles = ref([]);
 
-onMounted(() => {
-  fetchIncidentData();
-});
+    const fetchIncidentData = () => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      };
+      axios
+          .get(`/api/user/${userId}`, config)
+          .then((response) => {
 
-const fetchIncidentData = () => {
-  axios
-      .get(`/api/user/1`)
-      .then((response) => {
-        console.log(User)
-        User.value = response.data;
-      })
-      .catch((error) => {
-        console.error("Error fetching details:", error);
-      });
-};
+            User.value = response.data;
+            roles.value = User.value.roles;
+          })
+          .catch((error) => {
+            console.error("Error fetching details:", error);
+          });
+    };
+
+    onMounted(() => {
+      fetchIncidentData();
+    });
+    const authorities = computed(() => {
+      if (Array.isArray(roles.value)) {
+        return roles.value.map(role => role.authority).join(', ');
+      }
+      return '';
+    });
+
+    return {
+      authorities,
+      User,
+      roles
+    };
 
 
-const editUser = () => {
-  alert("Edit User Method");
-};
-const changePassword = () => {
-  alert("Change Password Method");
-};
+  }
+}
 
-const deleteUser = () => {
-  alert("Delete User Method");
-};
 
 
 </script>
