@@ -5,36 +5,35 @@ import dev.chha.incidenttracker.entities.User;
 import dev.chha.incidenttracker.repositories.IncidentRepository;
 import dev.chha.incidenttracker.entities.Incident;
 import dev.chha.incidenttracker.repositories.UserRepository;
-import dev.chha.incidenttracker.services.UserService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.lang.module.ResolutionException;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api")
 public class IncidentController {
 
-    @Autowired
-    private IncidentRepository incidentRepo;
+    private final IncidentRepository incidentRepo;
 
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
 
-    @Autowired
-    private UserService userService;
+    public IncidentController(IncidentRepository incidentRepo, UserRepository userRepo) {
+        this.incidentRepo = incidentRepo;
+        this.userRepo = userRepo;
+    }
 
     @GetMapping("/incident/{incidentId}")
     public ResponseEntity<?> hello(@PathVariable Long incidentId) {
 
         Optional<Incident> incidentOpt = incidentRepo.findById(incidentId);
 
-        if(!incidentOpt.isPresent()) {
+        if(incidentOpt.isEmpty()) {
             return new ResponseEntity<>("No Incident found", HttpStatus.NOT_FOUND);
         }
         Incident incident = incidentOpt.get();
@@ -53,11 +52,11 @@ public class IncidentController {
         }
     }
     @GetMapping("/incidents")
-    public ResponseEntity<Iterable<Incident>> getAll(){
+    public ResponseEntity<Iterable<IncidentDTO>> getAll(){
 
         Iterable<Incident> newIncident = incidentRepo.findAll();
 
-        return new ResponseEntity<Iterable<Incident>>(newIncident, HttpStatus.OK);
+        return new ResponseEntity<>(incidentList(newIncident), HttpStatus.OK);
 
     }
 
@@ -68,7 +67,7 @@ public class IncidentController {
 
         Optional<User> user = userRepo.findById(incidentDTO.getUser_id());
 
-        if(!user.isPresent()) {
+        if(user.isEmpty()) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
@@ -83,13 +82,13 @@ public class IncidentController {
 
         incidentRepo.save(newIncident);
 
-        return new ResponseEntity<Incident>(newIncident, HttpStatus.CREATED);
+        return new ResponseEntity<>(newIncident, HttpStatus.CREATED);
 
     }
 
     @PutMapping("/incidents/edit/{incidentId}")
     @Transactional
-    public ResponseEntity updateIncident(@PathVariable Long incidentId,
+    public ResponseEntity<?> updateIncident(@PathVariable Long incidentId,
                                          @RequestBody Incident incident) {
         Optional<Incident> updatedIncident = incidentRepo.findById(incidentId);
 
@@ -114,6 +113,15 @@ public class IncidentController {
             dto.setUsername(incident.getUser().getUsername());
         }
         return dto;
+    }
+
+    public Iterable<IncidentDTO> incidentList(Iterable<Incident> incidents) {
+
+        return StreamSupport.stream(incidents.spliterator(), false)
+                .map(this::getFieldsFromIncident)
+                .collect(Collectors.toList());
+
+
     }
 
 }

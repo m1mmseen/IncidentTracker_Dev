@@ -1,18 +1,17 @@
 <template>
-    <div class="visually-hidden bg-info z-3 position-absolute bottom-0 end-0 p-5 rounded-3 " id="info"><h1>:)</h1></div>
-    <div class="card mt-2"
+    <div class="card container text-start mt-2"
          v-for="incident in incidents"
          :key="incident.incidentId"
          @click="goToDetails(incident.incidentId)">
-      <div class="card-header m-0 pt-1 pb-0">
-        <b class="float-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.incidentId }}</span>{{ incident.titel }}</b>
-        <b class=""><span class="badge bg-warning-subtle text-dark me-3">{{ incident.user}}</span></b>
-        <span class="float-end" v-bind="$attrs"><b>
+      <div class="card-header row justify-content-between">
+        <b class="col text-start"><span class="badge bg-warning-subtle text-dark me-3">{{ incident.incidentId }}</span>{{ incident.titel }}</b>
+        <b class="col text-center">assigned to: <span class="badge bg-info-subtle text-dark-emphasis">{{ incident.username }}</span></b>
+        <span class="col text-end" v-bind="$attrs"><b>
           <p v-if="incident.isSolved">
           Status: <b>solved</b>
           </p>
           <p v-else>
-          Status: <b>open</b>
+          Status: <b class="badge bg-danger-subtle text-dark-emphasis">open</b>
           </p></b>
         </span>
 
