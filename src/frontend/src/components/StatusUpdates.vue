@@ -50,8 +50,15 @@ export default {
       required: true
     }
   },
-  created() {
+  mounted() {
     fetchUpdates.fetch(this.incidentId);
+    this.intervalId = setInterval(() => {
+      this.fetchUpdates.fetch(this.incidentId);
+    }, 60000);
+  },
+
+  beforeUnmount() {
+    clearInterval(this.intervalId);
   },
   computed: {
     fetchUpdates() {
@@ -63,7 +70,8 @@ export default {
   },
   data() {
     return {
-      token: userData.token
+      token: userData.token,
+      intervalId: null
     };
   },
 
