@@ -25,6 +25,7 @@
 
     <div class="col">
       <button class="btn btn-info float-end" @click="submitForm()">Update</button>
+
     </div>
   </div>
   </div>
@@ -35,12 +36,20 @@
 import axios from "axios";
 import {useAuth} from "../stores/auth.js";
 
+import {store} from "../stores/test.js";
+import {fetchUpdates} from "../stores/updatesStore.js";
+
 const userData = useAuth();
 
 
 
 
 export default {
+  computed: {
+    store() {
+      return store
+    }
+  },
   props: {
     incidentId: {
       type: [Number, String],
@@ -59,6 +68,8 @@ export default {
     }
   },
   methods: {
+
+
     submitForm: async function () {
 
       const config = {
@@ -79,6 +90,9 @@ export default {
         if (response.status === 201) {
           this.formdata.shortDescription = '';
           this.formdata.updateText = '';
+
+          await fetchUpdates.fetch(this.incidentId);
+
 
         }
       } catch (e) {

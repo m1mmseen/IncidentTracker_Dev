@@ -1,14 +1,14 @@
 <template>
-
   <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4 d-flex flex-column">
     <div class="row">
 
       <div class="col">
+        <button class="btn btn-info float-end" @click="store.add()">Test</button>
         <h3>Recent Updates</h3>
       </div>
     </div>
     <div class="d-flex flex-column mb-3"
-          v-for="update in updates"
+          v-for="update in fetchUpdates.updates"
           :key="update.id">
       <div class="card container">
         <div class="card-header row align-items-start">
@@ -33,18 +33,17 @@
 <script>
 import axios from "axios";
 import {useAuth} from "../stores/auth.js";
+import {store} from "../stores/test.js";
+import {fetchUpdates} from "../stores/updatesStore.js";
+import {useRoute} from "vue-router";
 
 const userData = useAuth();
+const route = useRoute();
+
 
 export default {
 
   name: 'updatesByIncident',
-  data() {
-    return {
-      updates: [],
-      token: userData.token
-    };
-  },
   props: {
     incidentId: {
       type: [Number, String],
@@ -52,25 +51,25 @@ export default {
     }
   },
   created() {
-    this.fetchUpdates();
+    fetchUpdates.fetch(this.incidentId);
   },
-  methods: {
-    async fetchUpdates() {
-      const config = {
-        headers: {
-          Authorization:`Bearer ${this.token}`
-        },
-      };
-      try {
-        const response = await axios.get(`/api/updates/${this.incidentId}`, config);
-        if (response.status === 200) {
-          this.updates = response.data;
-          console.log(response.data);
-        }
-      }catch (e) {
-        console.log("Error fetching Updates: ", e);
-      }
+  computed: {
+    fetchUpdates() {
+      return fetchUpdates
     },
+    store() {
+      return store
+    }
+  },
+  data() {
+    return {
+      token: userData.token
+    };
+  },
+
+
+  methods: {
+
     getDate(unix) {
       const unixTimestamp = unix;
 
@@ -98,7 +97,7 @@ export default {
       } else if (seconds > 0) {
         return seconds + " seconds ago";
       }
-      return difference;
+      return "now";
     }
   }
 }
