@@ -2,25 +2,28 @@
   <div v-if="isLoading">Loading...</div>
   <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4">
     <div class="row">
-      <h3>
+      <h3 class="col">
         <span class="badge bg-info-subtle text-dark">{{ incident.id }}</span>
         {{ incident.titel }}
-        <div class="btn-group float-end" role="group">
+
+      </h3>
+      <div class="col text-end" >
+        <div class="btn-group float-end" role="group"  v-if="isAdmin">
           <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
                   aria-expanded="false">
             Actions
           </button>
           <ul class="dropdown-menu">
             <a class="dropdown-item" href="#" id="edit" @click.stop="editIncident">Edit</a>
-<!--            <a class="dropdown-item" href="#" id="delete" @click.stop="deleteIncident">Delete</a>-->
+            <a class="dropdown-item" href="#" id="delete" @click.stop="deleteIncident" >Delete</a>
           </ul>
         </div>
-
-      </h3>
+        <button class="btn btn-success me-2">Solved</button>
+      </div>
     </div>
     <div class="row g-2">
       <div class="col">
-        <p>Description: <b>{{ incident.description }}</b></p>
+        <p>Description: {{ incident.description }}</p>
         <p>Reportdate: {{ incident.reportdate }}</p>
         <p>Reporter: {{incident.username}}</p>
         <p v-if="incident.isSolved">
@@ -75,12 +78,16 @@ export default {
         try {
           const response = await axios.get(`/api/incident/${newParams}`, config);
           incident.value = response.data;
-          console.log("Data fetched:", JSON.stringify(response.data, null, 2));
         }catch (error) {
           console.error('There was an error fetching the data:', error);
         }
       }
     }, {immediate: true});
+
+
+    const isAdmin = computed(() => {
+      return localStorage.getItem('isAdmin') === 'true';
+    });
 
     // Computed property to check if myObject is still loading
     const isLoading = computed(() => {
@@ -90,6 +97,7 @@ export default {
     return {
       incident: incident,
       isLoading,
+      isAdmin
     };
   }
 }

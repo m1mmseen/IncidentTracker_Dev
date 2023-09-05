@@ -22,9 +22,7 @@
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col">
-      <a href="#" class="btn btn-success">Solved</a>
-    </div>
+
     <div class="col">
       <button class="btn btn-info float-end" @click="submitForm()">Update</button>
     </div>
@@ -38,6 +36,8 @@ import axios from "axios";
 import {useAuth} from "../stores/auth.js";
 
 const userData = useAuth();
+
+
 
 
 export default {
@@ -54,16 +54,16 @@ export default {
         updateText: '',
       },
       token: userData.token,
-      user: userData.user,
       userId: userData.userId,
       username: userData.user
     }
   },
   methods: {
-    async submitForm() {
+    submitForm: async function () {
+
       const config = {
-        headers:{
-          Authorization:`Bearer ${this.token}`
+        headers: {
+          Authorization: `Bearer ${this.token}`
         }
       };
       const data = {
@@ -73,20 +73,17 @@ export default {
         username: this.username
 
       };
-      console.log(data);
-      console.log("inside update func" + this.incidentId)
-      await axios.post('/api/newUpdate',data, config)
-          .then((response) => {
-            const status = response.status;
-            if (status === 201) {
-              alert("success");
-              this.formdata.shortDescription = '';
-              this.formdata.updateText = '';
-            }
-          })
-          .catch(e => {
-            console.log("Error sending data: ", e);
-          })
+      try {
+        const response = await axios.post('/api/newUpdate', data, config);
+
+        if (response.status === 201) {
+          this.formdata.shortDescription = '';
+          this.formdata.updateText = '';
+
+        }
+      } catch (e) {
+        console.log("Error sending data: ", e);
+      }
     }
   }
 }

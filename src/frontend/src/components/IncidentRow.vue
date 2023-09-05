@@ -23,7 +23,7 @@
         <p>Test</p>
         <div class="btn-group float-end">
           <button class="btn btn-outline-success" v-on:click.stop="solved">Solved</button>
-          <button class="btn btn-outline-danger" v-on:click.stop="deleteIncident(incident.id)">Delete</button>
+          <button class="btn btn-outline-danger" v-on:click.stop="deleteIncident(incident.incidentId)" v-if="isAdmin">Delete</button>
         </div>
       </div>
     </div>
@@ -48,7 +48,13 @@ export default {
     this.fetchIncidents();
 
   },
+  computed() {
+    this.isAdmin();
+  },
   methods: {
+    isAdmin() {
+      return localStorage.getItem('isAdmin') === 'true';
+    },
     async fetchIncidents() {
       const config = {
         headers: {
@@ -58,6 +64,7 @@ export default {
       try {
         const response = await axios.get('api/incidents', config);
         this.incidents = response.data;
+        console.log(response.data);
         } catch (error) {
         console.error('Error occurred fetching incidents:', error)
       }
@@ -72,15 +79,20 @@ export default {
       });
     },
     async deleteIncident(incidentId) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      }
       try {
-        await axios.delete(`/api/incident/${incidentId}`);
+        await axios.delete(`/api/incident/${incidentId}`, config);
         await this.fetchIncidents();
         await alert("deleted");
       } catch (error) {
         console.error('Error occurred deleting incidents:', error)
       }
     },
-    edit() {
+    solved() {
       alert("Edited");
   },
 

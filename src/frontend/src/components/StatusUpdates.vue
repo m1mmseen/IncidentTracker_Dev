@@ -1,6 +1,8 @@
 <template>
+
   <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4 d-flex flex-column">
     <div class="row">
+
       <div class="col">
         <h3>Recent Updates</h3>
       </div>
@@ -99,7 +101,6 @@ export default {
       return difference;
     }
   }
-
 }
 
 </script>

@@ -60,8 +60,9 @@ public class IncidentUpdatesController {
         update.setUser(user.get());
 
         updateRepo.save(update);
+        List<IncidentUpdates> updates = updateRepo.findAllByIncident_IdOrderByCreatedAtDesc(update.getIncident().getIncidentId());
 
-        return new ResponseEntity<>(update, HttpStatus.CREATED);
+        return new ResponseEntity<>(updateList(updates), HttpStatus.CREATED);
 
     }
     @GetMapping("/allUpdates")
