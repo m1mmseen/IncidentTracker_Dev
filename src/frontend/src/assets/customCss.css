@@ -1,0 +1,31 @@
+:root {
+
+    --marianblue: rgb(25,36,77);
+    --lightermarianblue: rgba(40,58,122,0.5);
+    --floralwhite: rgba(251,246,238,1)
+}
+
+
+
+.first-bg{
+    background-color: var(--marianblue) ;
+}
+.first-text{
+    color: var(--marianblue);
+}
+
+.secondary-bg{
+    background-color: var(--lightermarianblue);
+}
+.secondary-text{
+    color: var(--lightermarianblue);
+}
+.base-bg{
+    background-color: var(--floralwhite) ;
+}
+.base-text{
+    color: var(--floralwhite);
+}
+
+
+

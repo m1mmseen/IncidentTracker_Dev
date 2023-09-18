@@ -16,11 +16,7 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('../views/Dashboard_View.vue')
-    },   {
-        path: '/dashboard/admin',
-        name: 'admin-dashboard',
-        component: () => import('../views/Dashboard_Admin_View.vue')
-    },   {
+    },  {
         path: '/dashboard/admin/user-overview',
         name: 'admin-user-overview',
         component: () => import('../views/User_Overview_Admin_view.vue')
@@ -37,6 +33,10 @@ const routes = [
         path: '/incidents/create',
         name: 'create-incident',
         component: () => import('../views/Incident_Report_View.vue')
+    }, {
+        path: '/incidents/notifications',
+        name: 'incidents-notifications',
+        component: () => import('../views/Incident_Report_Notification_View.vue')
     },   {
         path: '/user',
         name: 'user',

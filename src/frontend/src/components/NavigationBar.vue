@@ -17,7 +17,7 @@
             <router-link to="/user/create" class="nav-link" v-if="isAdmin">Create User</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/dashboard/admin/user-overview" class="nav-link" id="test" v-if="isAdmin">Users</router-link>
+            <router-link to="/dashboard/admin/user-overview" class="nav-link" v-if="isAdmin">Users</router-link>
           </li>
         </ul>
       </div>
@@ -40,9 +40,6 @@ export default {
 .nav-item:hover {
   transform: scale(1.1);
   text-decoration: underline #42b983;
-}
-#test{
-  color: #42b983;
 }
 
 </style>

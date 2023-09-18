@@ -26,7 +26,7 @@ export default {
 
 <template>
   <NavigationBar/>
-  <PageTitleWithButton msg="Incident Details" destination="/incidents" buttonText="Back to list"/>
+  <PageTitleWithButton msg="Incident Details" destination="/incidents" buttonText="Back to Incidents"/>
   <IncidentCard/>
   <StatusNewUpdate :incidentId="id"/>
   <StatusUpdates :incidentId="id"/>

@@ -31,9 +31,9 @@
             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item clickable" @click.stop="editUser">Edit</a></li>
-              <li><a class="dropdown-item clickable" @click.stop="deleteUser(user.id)">Delete</a></li>
-              <li><a class="dropdown-item clickable" href="#">Change Password</a></li>
+              <li><a class="dropdown-item clickable" id="edit" @click.stop="editUser">Edit</a></li>
+              <li><a class="dropdown-item clickable" id="delete" @click.stop="deleteUser(user.id)">Delete</a></li>
+              <li><a class="dropdown-item clickable" id="changepw" href="#">Change Password</a></li>
             </ul>
           </div>
         </td>
@@ -176,4 +176,5 @@ export default {
 .clickable{
   cursor: pointer;
 }
+
 </style>

@@ -1,7 +1,8 @@
 <template>
   <NavigationBar/>
   <PageTitleWithButton msg="Dashboard" destination="/incidents/create" buttonText="Report new Incident"/>
-  <h1 class="text-bg-light">Hello {{user}}</h1>
+  <h3 class="bg-success-subtle text-dark text-center mt-2 mb-2 rounded-4">Welcome <strong>{{user}}</strong>, let's check some incidents today</h3>
+  <DashboardGrid/>
   <User_Footer_Menu/>
 </template>
 
@@ -13,6 +14,7 @@ import PageTitleWithButton from "../components/PageTitleWithButton.vue";
 import {useAuth} from "../stores/auth.js";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import DashboardGrid from "../components/DashboarsGrid.vue";
 
 const auth = useAuth();
 const token = auth.token;

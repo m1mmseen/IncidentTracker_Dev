@@ -1,36 +1,34 @@
 <template>
-    <div class="container-sm p-4 mt-3 shadow">
-      <h3 class="text-center">Incidents for User </h3>
-
       <table class = "table table-hover">
         <thead>
         <tr>
           <th> Incident Id</th>
           <th> Incident Titel</th>
-
         </tr>
-
         </thead>
         <tbody>
-        <tr v-for="incident in incidents" v-bind:key="incident.id" v-on:click="goToDetails(incident.id)">
-          <td> {{incident.id }}</td>
+        <tr v-for="incident in incidents" v-bind:key="incident.id" @click="goToDetails(incident.incidentId)">
+          <td> {{incident.incidentId }}</td>
           <td> {{incident.titel }}</td>
         </tr>
         </tbody>
       </table>
 
-    </div>
+
 </template>
 
 <script>
   import axios from "axios";
   import router from "../router/routes.js";
+  import {useAuth} from "../stores/auth.js";
 
+  const userdata = useAuth();
 
   export default {
     name: 'IncidentTable',
     data(){
       return {
+        token: userdata.token,
         incidents: [],
       };
     },
@@ -39,15 +37,20 @@
       },
     methods: {
       async fetchIncidents() {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          },
+        };
         try {
-          const response = await axios.get('api/incidents');
+          const response = await axios.get('api/incidents', config);
           this.incidents = response.data;
         } catch (error) {
           console.error('Error occurred fetching incidents:', error)
         }
       },
       goToDetails(id) {
-        router.push({name: 'incident-details', params: { incidentId: id}})
+        router.push({name: 'incident-details', params: { id: id}})
       }
     },
   };
@@ -64,8 +67,7 @@
 
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
-  background-color: #26c97d;
-  color: white;
+  background-color: #d1e7dd;
 }
 
 </style>

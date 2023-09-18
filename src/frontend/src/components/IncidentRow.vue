@@ -1,7 +1,7 @@
 <template>
     <p>Incidents: {{incidents.length}}</p>
 
-    <div class="card container text-start mt-2 m-3  border-2 border-dark"
+    <div class="card container text-start mt-2 m-3  border-1 border-dark"
          v-for="incident in incidents"
          :key="incident.incidentId"
          @click="goToDetails(incident.incidentId)">
@@ -46,7 +46,6 @@ export default {
   },
   created() {
     this.fetchIncidents();
-
   },
   computed() {
     this.isAdmin();
@@ -64,13 +63,12 @@ export default {
       try {
         const response = await axios.get('api/incidents', config);
         this.incidents = response.data;
-        console.log(response.data);
         } catch (error) {
         console.error('Error occurred fetching incidents:', error)
       }
     },
     goToDetails(id) {
-      console.log(id);
+
       router.push({
         name: 'incident-details',
         params: {
