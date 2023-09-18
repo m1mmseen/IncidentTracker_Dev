@@ -4,10 +4,11 @@
 
 
 <template>
-  <div class="col card p-0 me-3 ms-3">
-    <div class="card-header bg-white"></div>
+  <div class="col card p-0 m-3">
+    <div class="card-header bg-white">
+      <h4>{{ cardTitle }}</h4>
+    </div>
     <div class="card-title ps-2">
-      <h3>{{ cardTitle }}</h3>
     </div>
     <div class="card-body text-center">
       <component :is="componentName"/>
@@ -18,10 +19,10 @@
 
 <script>
 
-import UserTable from "./UserTable.vue";
-import IncidentRow from "./IncidentRow.vue";
+import UserTableDashboard from "./UserTableDashboardView.vue";
 import NotFound from "./NotFound.vue";
 import IncidentTable from "./IncidentTable.vue";
+import ActiveUsers from "./ActiveUsers.vue";
 
 export default{
   name: 'DashboardCard',
@@ -31,16 +32,19 @@ export default{
   },
 
   components: {
-    UserTable,
+    UserTableDashboard,
     IncidentTable,
-    NotFound
+    NotFound,
+    ActiveUsers
   },
   computed: {
     componentName() {
       if (this.$props.component === 'users') {
-        return 'UserTable'
+        return 'UserTableDashboard'
       } else if (this.$props.component === 'incidents') {
         return 'IncidentTable'
+      } else if (this.$props.component === 'activeUsers') {
+        return 'ActiveUsers'
       }
 
       else {

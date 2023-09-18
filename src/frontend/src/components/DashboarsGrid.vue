@@ -6,7 +6,8 @@
       <DashboardCard card-title="Recent Activities" component="notfound"/>
     </div>
     <div class="row mt-3" v-if="isAdmin">
-      <DashboardCard card-title="Users" component="users"/>
+      <DashboardCard card-title="Active Users" component="activeUsers"/>
+      <DashboardCard card-title="Failed Logins" component="notfound"/>
     </div>
   </div>
 </template>

@@ -5,13 +5,6 @@
       <tr>
         <th scope="col" class="clickable text-nowrap" @click="sortById">Id</th>
         <th scope="col" class="clickable text-nowrap" @click="sortByUsername">Username</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByFirst">Firstname</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByLast">Last</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByRole">Role</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByLogin">Last Login</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByIncidents">Assigned Incidents</th>
-        <th scope="col" class="clickable text-nowrap" @click="sortByPasswordChanges">Last Password Change</th>
-        <th scope="col">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -20,23 +13,6 @@
           :key="user.id">
         <td>{{user.userId}}</td>
         <td>{{user.username}}</td>
-        <td>{{user.firstname}}</td>
-        <td>{{user.lastname}}</td>
-        <td>{{user.highestAuthority}}</td>
-        <td>Dummy</td>
-        <td>{{ user.assignedIncidents}}</td>
-        <td>Dummy</td>
-        <td>
-          <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item clickable" id="edit" @click.stop="editUser">Edit</a></li>
-              <li><a class="dropdown-item clickable" id="delete" @click.stop="deleteUser(user.id)">Delete</a></li>
-              <li><a class="dropdown-item clickable" id="changepw" href="#">Change Password</a></li>
-            </ul>
-          </div>
-        </td>
       </tr>
       </tbody>
     </table>
@@ -56,7 +32,7 @@ const config = {
 };
 
 export default {
-  name: 'UserTableDashboard',
+  name: 'ActiveUsers',
   data() {
     return {
       config: config,
