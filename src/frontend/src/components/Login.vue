@@ -39,7 +39,7 @@ const onSubmit = () => {
   if (user.username !== '' && user.password !== '') {
       useAuth().login(user.username, user.password);
   } else {
-    console.log("rausgefallen");
+    alert("Bitte alle Felder füllen");
   }
 }
 

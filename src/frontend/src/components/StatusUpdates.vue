@@ -1,44 +1,63 @@
 <template>
-  <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4 d-flex flex-column">
-    <div class="row">
-
-      <div class="col">
-        <button class="btn btn-info float-end" @click="store.add()">Test</button>
-        <h3>Recent Updates</h3>
-      </div>
-    </div>
-    <div class="d-flex flex-column mb-3"
-          v-for="update in fetchUpdates.updates"
+  <div class="container-sm border border-light-subtle rounded shadow d-flex flex-column p-4 mt-3  mb-5">
+    <h3>Recent Updates</h3>
+<!--    <table class="table">
+      <thead class="">
+      <th scope="col">title</th>
+      <th scope="col">user</th>
+      <th scope="col"></th>
+      <th scope="col">created</th>
+      </thead>
+      <tbody>
+      <tr class="" v-for="update in fetchUpdates.updates"
           :key="update.id">
-      <div class="card container">
-        <div class="card-header row align-items-start">
-          <div class="col text-start">
-            <strong>{{ update.shortDescription }}</strong>
+        <td>{{update.shortDescription}}</td>
+        <td>{{update.username}}</td>
+        <td>{{getDate(update.createdAt)}}</td>
+      </tr>
+
+
+      </tbody>
+    </table>-->
+
+    <div class="accordion" id="updates">
+      <div class="accordion-item" v-for="(update, index) in fetchUpdates.updates" :key="update.id">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + index" :aria-expanded="{true : index > 0, false : index === 0}" :aria-controls="'collapse' + index">
+            <div class="container">
+              <div class="row">
+              <div class="col">
+                {{ update.shortDescription }}
+              </div>
+              <div class="col text-center">
+                <span class="badge bg-success-subtle text-dark me-3">{{ update.username }}</span>
+                <strong class="">{{getDate(update.createdAt)}}</strong>
+              </div>
+            </div>
+            </div>
+          </button>
+        </h2>
+        <div :id="'collapse' + index" class="accordion-collapse collapse" :class="{'show': index === 0 }" :aria-labelledby="'heading' + index" data-bs-parent="#updates">
+          <div class="accordion-body bg-success-subtle">
+            {{ update.updateText }}
           </div>
-          <div class="col text-center">
-            <strong>{{ update.username }}</strong>
-          </div>
-          <div class="col text-end">
-            <strong> {{getDate(update.createdAt)}}</strong>
-          </div>
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{update.updateText}}</p>
         </div>
       </div>
     </div>
+
+
+
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import {useAuth} from "../stores/auth.js";
 import {store} from "../stores/test.js";
 import {fetchUpdates} from "../stores/updatesStore.js";
-import {useRoute} from "vue-router";
+
 
 const userData = useAuth();
-const route = useRoute();
+
 
 
 export default {
@@ -111,3 +130,13 @@ export default {
 }
 
 </script>
+
+
+<style scoped>
+.accordion-button:not(.collapsed) {
+  color: black  !important;
+  background-color: white !important;
+}
+
+
+</style>

@@ -33,6 +33,16 @@ public class Incident {
     @OneToMany(mappedBy = "incident")
     private List<IncidentUpdates> updates;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private IncidentCategories category;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "severityId")
+    private IncidentSeverity severity;
+
     public Incident() {
     }
 
@@ -109,6 +119,21 @@ public class Incident {
         this.user = user;
     }
 
+    public IncidentCategories getCategory() {
+        return category;
+    }
+
+    public void setCategory(IncidentCategories category) {
+        this.category = category;
+    }
+
+    public IncidentSeverity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(IncidentSeverity severity) {
+        this.severity = severity;
+    }
 
     @Override
     public String toString() {
@@ -120,6 +145,8 @@ public class Incident {
                 ", isSolved=" + isSolved +
                 ", user=" + user +
                 ", updates=" + updates +
+                ", category=" + category +
+                ", severity=" + severity +
                 '}';
     }
 }

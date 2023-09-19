@@ -6,7 +6,7 @@ export const useAuth = defineStore({
     id: 'auth,',
     state: () => {
         return {
-            //localStorage only in Dev mode!! In production i will use HTTP-Only Cookies to store jwt to prevent from CSRF and XSS
+            //localStorage only in Dev mode!! In production, I will use HTTP-Only Cookies to store jwt to prevent from CSRF and XSS
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
             token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null,
             userId: localStorage.getItem('userId') ? JSON.parse(localStorage.getItem('userId')) : null,
@@ -37,8 +37,10 @@ export const useAuth = defineStore({
 
                 await router.push(this.returnUrl || "/");
             }
-            else {
-                throw new Error("Invalid Username or Password");
+            else if(response.status === 500) {
+                alert("Server not available");
+            } else if(response.status === 401) {
+                alert("Insert valid username and password");
             }
 
         },

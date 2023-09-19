@@ -1,33 +1,33 @@
 <template>
   <div class="container-sm mt-3 border border-light-subtle rounded shadow p-4 d-flex flex-column">
-  <div class="row g-2">
-    <h3>Log new Update to Incident No. {{incidentId}}</h3>
-    <div class="form-floating">
-      <form>
-      <label for="shortDescription">Short description</label>
-      <textarea class="form-control"
-                placeholder="Describe in short why you update the Incident"
-                id="shortDescription"
-                style="height: 80px"
-                v-model="formdata.shortDescription">
+    <div class="row g-2">
+      <h3>Log new Update to Incident No. {{incidentId}}</h3>
+      <div class="form-floating">
+        <form>
+          <label for="shortDescription">Short description</label>
+          <textarea class="form-control"
+                    placeholder="Describe in short why you update the Incident"
+                    id="shortDescription"
+                    style="height: 80px"
+                    v-model="formdata.shortDescription">
         </textarea>
-      <label for="updateText">Updates</label>
-        <textarea class="form-control"
-                  placeholder="Describe in detail, what you made with incident"
-                  id="updateText"
-                  style="height: 100px"
-                  v-model="formdata.updateText">
+          <label for="updateText">Updates</label>
+          <textarea class="form-control"
+                    placeholder="Describe in detail, what you made with incident"
+                    id="updateText"
+                    style="height: 100px"
+                    v-model="formdata.updateText">
         </textarea>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-  <div class="row mt-3">
+    <div class="row mt-3">
 
-    <div class="col">
-      <button class="btn btn-info float-end" @click="submitForm()">Update</button>
+      <div class="col">
+        <button class="btn btn-info float-end" @click="submitForm()">Update</button>
 
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

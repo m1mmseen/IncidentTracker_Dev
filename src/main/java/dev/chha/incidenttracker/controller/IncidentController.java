@@ -1,9 +1,13 @@
 package dev.chha.incidenttracker.controller;
 
 import dev.chha.incidenttracker.dtos.IncidentDTO;
+import dev.chha.incidenttracker.entities.IncidentCategories;
+import dev.chha.incidenttracker.entities.IncidentSeverity;
 import dev.chha.incidenttracker.entities.User;
+import dev.chha.incidenttracker.repositories.IncidentCategoriesRepository;
 import dev.chha.incidenttracker.repositories.IncidentRepository;
 import dev.chha.incidenttracker.entities.Incident;
+import dev.chha.incidenttracker.repositories.IncidentSeverityRepository;
 import dev.chha.incidenttracker.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -23,9 +27,15 @@ public class IncidentController {
 
     private final UserRepository userRepo;
 
-    public IncidentController(IncidentRepository incidentRepo, UserRepository userRepo) {
+    private final IncidentCategoriesRepository catRepo;
+
+    private final IncidentSeverityRepository sevRepo;
+
+    public IncidentController(IncidentRepository incidentRepo, UserRepository userRepo, IncidentCategoriesRepository catRepo, IncidentSeverityRepository sevRepo) {
         this.incidentRepo = incidentRepo;
         this.userRepo = userRepo;
+        this.catRepo = catRepo;
+        this.sevRepo = sevRepo;
     }
 
     @GetMapping("/incident/{incidentId}")
@@ -36,8 +46,12 @@ public class IncidentController {
         if(incidentOpt.isEmpty()) {
             return new ResponseEntity<>("No Incident found", HttpStatus.NOT_FOUND);
         }
+        System.out.println(incidentOpt.get().toString());
         Incident incident = incidentOpt.get();
+        System.out.println(incident.toString());
+
         IncidentDTO responseIncidentDTO = getFieldsFromIncident(incident);
+
 
         return new ResponseEntity<>(responseIncidentDTO, HttpStatus.OK);
 
@@ -46,6 +60,7 @@ public class IncidentController {
     public void delete(@PathVariable Long incidentId) {
 
         Optional<Incident> incident = incidentRepo.findById(incidentId);
+
 
         if (incident.isPresent()) {
             incidentRepo.deleteById(incidentId);
@@ -60,6 +75,23 @@ public class IncidentController {
 
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<?> getCategories(){
+
+        Iterable<IncidentCategories> categories = catRepo.findAll();
+
+        return new ResponseEntity<>( categories, HttpStatus.OK);
+    }
+
+    @GetMapping("/severities")
+    public ResponseEntity<?> getSeverities() {
+
+        Iterable<IncidentSeverity> severities = sevRepo.findAll();
+
+        return new ResponseEntity<>(severities, HttpStatus.OK);
+
+    }
+
     @PostMapping("/incidents/create")
     @Transactional
     public ResponseEntity<?> createIncident(@RequestBody IncidentDTO incidentDTO) {
@@ -67,8 +99,19 @@ public class IncidentController {
 
         Optional<User> user = userRepo.findById(incidentDTO.getUser_id());
 
+
         if(user.isEmpty()) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        Optional<IncidentCategories> cat = catRepo.findById(incidentDTO.getCategory());
+        if(cat.isEmpty()) {
+            return new ResponseEntity<>("Wrong category", HttpStatus.NOT_FOUND);
+        }
+
+        Optional<IncidentSeverity> sev = sevRepo.findById(incidentDTO.getSeverity());
+        if(sev.isEmpty()) {
+            return new ResponseEntity<>("Wrong severity", HttpStatus.NOT_FOUND);
         }
 
         Incident newIncident = new Incident();
@@ -78,6 +121,8 @@ public class IncidentController {
         newIncident.setDescription(incidentDTO.getDescription());
         newIncident.setReportdate(incidentDTO.getReportdate());
         newIncident.setSolved(incidentDTO.isSolved());
+        newIncident.setCategory(cat.get());
+        newIncident.setSeverity(sev.get());
 
 
         incidentRepo.save(newIncident);
@@ -98,6 +143,13 @@ public class IncidentController {
             dto.setUser_id(incident.getUser().getUserId());
             dto.setUsername(incident.getUser().getUsername());
         }
+        if(incident.getCategory() != null) {
+            dto.setCategoryName(incident.getCategory().getCategoryName());
+        }
+        if(incident.getSeverity() != null) {
+            dto.setSeverityName(incident.getSeverity().getSeverityName());
+        }
+
         return dto;
     }
 
@@ -106,8 +158,6 @@ public class IncidentController {
         return StreamSupport.stream(incidents.spliterator(), false)
                 .map(this::getFieldsFromIncident)
                 .collect(Collectors.toList());
-
-
     }
 
 }

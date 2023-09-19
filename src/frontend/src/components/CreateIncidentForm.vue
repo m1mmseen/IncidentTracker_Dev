@@ -15,25 +15,25 @@
 
           <div class="col-8">
             <label>Incident Categorie</label>
-            <select class="form-select me-3">
-              <option selected>choose...</option>
-              <option>Maleware</option>
-              <option>Phishing</option>
-              <option>DDoS Attack</option>
-              <option>Unauthorised Access</option>
-              <option>Data Leakage</option>
-              <option>Physical Breach</option>
-              <option>Social Engineering</option>
+            <select class="form-select me-3" id="category" v-model="formdata.category" @change="setCategory($event)">
+              <option value="0" selected>choose...</option>
+              <option v-for="option in categories" :value="option.categoryId" >
+                {{option.categoryName}}
+              </option>
             </select>
           </div>
           <div class="col-4">
             <label>Severity Level</label>
-            <select class="form-select">
-              <option selected>choose...</option>
-              <option class="bg-danger text-white p-4">Critical (P1)</option>
-              <option class="bg-danger-subtle">High (P2)</option>
-              <option class="bg-warning">Medium (P3)</option>
-              <option class="bg-warning-subtle">Low (P4)</option>
+            <select class="form-select" id="severity" v-model="formdata.severity" @change="setSeverity($event)">
+              <option value="0" selected>choose...</option>
+              <option :value="severity.severityId" v-for="(severity, index) in severities"  :class="{
+                'bg-danger':severity.severityId === 1,
+                'bg-danger-subtle': severity.severityId === 2,
+                'bg-warning': severity.severityId === 3,
+                'bg-warning-subtle': severity.severityId === 4}"
+              >
+                {{severity.severityName}}
+              </option>
             </select>
           </div>
       </div>
@@ -50,12 +50,20 @@ import {useAuth} from "../stores/auth.js";
 
 const userdata = useAuth();
 const userId = userdata.userId;
+const token = userdata.token;
+
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`
+  },
+};
 
 export default {
   name: 'IncidentTable',
   data(){
     return {
-      token: userdata.token,
+      categories: [],
+      severities: [],
       formdata: {
         titel: '',
         description: '',
@@ -65,16 +73,51 @@ export default {
         }),
         isSolved: false,
         user_id: userId,
-      }
+        category: '',
+        severity: ''
+      },
     };
   },
+  created() {
+    this.getCategories();
+    this.getSeverities();
+  },
   methods: {
+    setCategory(event) {
+      this.category = event.target.value;
+      console.log("severity:" + this.severity + " _ category:" + this.category);
+    },
+    setSeverity(event) {
+      this.severity = event.target.value;
+      console.log("severity:" + this.severity + " _ category:" + this.category);
+    },
+    async getCategories() {
+      try {
+        await axios.get('/api/categories', config)
+            .then((response) => {
+              if (response.status === 200) {
+                this.categories = response.data;
+              }
+            })
+      } catch(e) {
+        console.log("Error fetching categories: " + e);
+      }
+    },
+    async getSeverities() {
+      try {
+        await axios.get('/api/severities', config)
+            .then((response) => {
+              if (response.status === 200) {
+                this.severities = response.data;
+              }
+            })
+      } catch(e) {
+        console.log("Error fetching severities: " + e);
+      }
+    },
+
     async submitForm() {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${this.token}`
-        },
-      };
+      console.log(this.formdata);
       await axios.post('/api/incidents/create', this.formdata, config)
           .then((response) => {
             const status = response.status;
@@ -82,13 +125,14 @@ export default {
               alert("success");
               this.formdata.titel = '';
               this.formdata.description = '';
+              this.formdata.severity = '';
+              this.formdata.category = ''
             }
           })
             .catch(error => {
             console.error("An error occurred ", error)
           });
-
-    },
+    }
   },
 };
 

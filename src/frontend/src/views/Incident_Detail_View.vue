@@ -31,6 +31,9 @@ export default {
   <StatusNewUpdate :incidentId="id"/>
   <StatusUpdates :incidentId="id"/>
 
+
+
+
   <User_Footer_Menu/>
 </template>
 

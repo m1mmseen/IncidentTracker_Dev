@@ -33,8 +33,8 @@
         <p v-else>
           Status: <b>open</b>
         </p>
-        <p>Tags: "dummy"</p>
-        <p>Priority: "dummy"</p>
+        <p>Category: {{incident.categoryId}}</p>
+        <p >Severity: {{incident.severityName}}</p>
       </div>
       <div class="col">
       </div>
@@ -78,6 +78,7 @@ export default {
         try {
           const response = await axios.get(`/api/incident/${newParams}`, config);
           incident.value = response.data;
+          console.log(response.data);
         }catch (error) {
           console.error('There was an error fetching the data:', error);
         }
