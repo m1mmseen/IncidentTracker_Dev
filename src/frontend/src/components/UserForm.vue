@@ -52,7 +52,7 @@ onMounted(() => {
 
 const fetchIncidentData = () => {
   axios
-      .get(`/api/user/1`)
+      .get(`/api/user/1`) // Replace with userId
       .then((response) => {
         console.log(User)
         User.value = response.data;

@@ -61,8 +61,8 @@ export default {
 
   setup() {
 
-    const incident = ref({}); // Initial empty object
-    const route = useRoute(); // Get access to the current route
+    const incident = ref({});
+    const route = useRoute();
     const userData = useAuth();
     const token = userData.token;
 
@@ -94,6 +94,7 @@ export default {
     const isLoading = computed(() => {
       return Object.keys(incident.value).length === 0;
     });
+
 
     return {
       incident: incident,

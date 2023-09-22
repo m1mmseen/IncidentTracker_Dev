@@ -28,12 +28,12 @@
         <td>Dummy</td>
         <td>
           <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-close-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item clickable" @click.stop="editUser">Edit</a></li>
-              <li><a class="dropdown-item clickable" @click.stop="deleteUser(user.id)">Delete</a></li>
-              <li><a class="dropdown-item clickable" href="#">Change Password</a></li>
+              <li><a class="dropdown-item bg-info clickable" @click="testMethod">Edit</a></li>
+              <li><a class="dropdown-item bg-danger clickable" @click="deleteUser(user.userId)">Delete</a></li>
+              <li><a class="dropdown-item bg-warning clickable" @click="testMethod">Change Password</a></li>
             </ul>
           </div>
         </td>
